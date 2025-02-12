@@ -4,6 +4,7 @@ import dotenv from "dotenv"
 import cookieParser from "cookie-parser"
 import connectDb from "./db/connectDb.js"
 import authRoute from "./routes/authRoutes.js"
+import userRoute from "./routes/userRoutes.js"
 
 dotenv.config()
 
@@ -17,6 +18,7 @@ app.use(cors({
 }))
 
 app.use('/api/auth', authRoute)
+app.use('/api/user', userRoute)
 
 app.listen(port,()=>{
     console.log(`Server Running on PORT : ${port}`)
