@@ -2,3 +2,4 @@
 /backend/.env
 
 /frondend/node_modules
+/frondend/.env

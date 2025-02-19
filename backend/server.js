@@ -10,11 +10,13 @@ dotenv.config()
 
 const app = express()
 const port = process.env.PORT || 5000
+const allowedOrigins = ['http://localhost:5173']
 
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
-    credentials : true
+    origin : allowedOrigins,
+    credentials : true,
 }))
 
 app.use('/api/auth', authRoute)
