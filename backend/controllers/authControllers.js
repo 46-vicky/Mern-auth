@@ -10,6 +10,8 @@ export const register = async (req,res)=>{
     if(!username || !email || !password){
 
         return res.status(400).json({success : false, message : "Missing Details"})
+
+        console.log("Missing Details")
     }
 
     try{
@@ -20,6 +22,7 @@ export const register = async (req,res)=>{
 
             return res.status(400).json({success : false, message : "Email Already Exist" })
 
+            console.log("User Already Exist")
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);

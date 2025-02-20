@@ -1,13 +1,15 @@
 import jwt from 'jsonwebtoken'
 import User from "../models/authModel.js"
 
-const protectRoute = async (req,res,next)=>{
+const protectRoute = async (req, res, next)=>{
+
+    console.log('triggered')
 
     const {token} = req.cookies;
 
     if(!token){
 
-        return res.status(400).json({error : "Unauthorized : No token Provided"});
+        return res.status(400).json({success: false, message : "Unauthorized : No token Provided"});
 
     }
 
@@ -17,7 +19,7 @@ const protectRoute = async (req,res,next)=>{
 
         if(!decodedToken){
     
-            return res.status(400).json({error : "Unauthorized : Invalid Token"});
+            return res.status(400).json({success: false, message : "Unauthorized : Invalid Token"});
     
         }
     
@@ -25,7 +27,7 @@ const protectRoute = async (req,res,next)=>{
     
         if(!user){
             
-            return res.status(400).json({error : "User Not Found"})
+            return res.status(400).json({success: false, message : "User Not Found"})
     
         }
     
@@ -35,9 +37,7 @@ const protectRoute = async (req,res,next)=>{
 
     }catch(error){
 
-        console.log(error.message)
-
-        res.status(500).json({error : "Internal Server Error"})
+        res.status(500).json({success: false, message : "Internal Server Error"})
 
     }
 

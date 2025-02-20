@@ -11,13 +11,13 @@ const Login = () => {
 
   const [state, setState] = useState("Sign Up");
 
-  const [name, setName] = useState("");
+  const [username, setUserName] = useState("");
 
   const [email, setEmail] = useState("");
 
   const [password, setPassword] = useState("");
 
-  const {backendURL, setIsLoggedIn} = useContext(AppContext);
+  const {backendURL, setIsLoggedIn, getUserData} = useContext(AppContext);
 
   const onSubmitHandler = async (e)=>{
 
@@ -25,16 +25,16 @@ const Login = () => {
 
       e.preventDefault();
 
-      axios.defaults.withCrendentials = true
+      axios.defaults.withCredentials = true;
 
       if(state === 'Sign Up'){
 
-        const {data} = await axios.post(backendURL+'/api/auth/register',{name, email, password})
+        const {data} = await axios.post(`${backendURL}/api/auth/register`, {username, email, password});
 
         if(data.success){
 
           setIsLoggedIn(true)
-
+          getUserData()
           navigate('/')
 
         }else{
@@ -45,12 +45,12 @@ const Login = () => {
 
       }else{
 
-        const {data} = await axios.post(backendURL+'/api/auth/login',{email, password})
+        const {data} = await axios.post(`${backendURL}/api/auth/login`,{email, password})
 
         if(data.success){
 
           setIsLoggedIn(true)
-
+          getUserData()
           navigate('/')
 
         }else{
@@ -98,8 +98,8 @@ const Login = () => {
                 placeholder="Full Name"
                 required
                 className="bg-transparent outline-none"
-                onChange={(e) => setName(e.target.value)}
-                value={name}
+                onChange={(e) => setUserName(e.target.value)}
+                value={username}
               />
             </div>
           )}
