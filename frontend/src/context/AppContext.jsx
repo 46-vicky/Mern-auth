@@ -18,7 +18,7 @@ export const AppContextProvider = (props)=>{
 
             axios.defaults.withCredentials = true;
 
-            const data = await axios.get(`${backendURL}/api/auth/is-auth`)
+            const {data} = await axios.get(`${backendURL}/api/auth/is-auth`)
 
             if(data.success){
 
@@ -26,15 +26,13 @@ export const AppContextProvider = (props)=>{
 
                   getUserData() 
 
-            }else{
-
-                toast.error(data.message)
-
             }
 
         }catch(error){
 
-            toast.error(error.message)
+            setIsLoggedIn(false)
+
+            setUserData(false)
 
         }
     }
@@ -51,7 +49,7 @@ export const AppContextProvider = (props)=>{
 
         }catch(error){
 
-            toast.error(data.message)
+            toast.error(error.response?.data?.message || "Something went wrong. Please try again.");
 
         }
 

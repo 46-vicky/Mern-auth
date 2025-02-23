@@ -9,9 +9,8 @@ export const register = async (req,res)=>{
 
     if(!username || !email || !password){
 
-        return res.status(400).json({success : false, message : "Missing Details"})
+        return res.json({success : false, message : "Missing Details"})
 
-        console.log("Missing Details")
     }
 
     try{
@@ -20,9 +19,8 @@ export const register = async (req,res)=>{
 
         if(isUserExistense){
 
-            return res.status(400).json({success : false, message : "Email Already Exist" })
+            return res.json({success : false, message : "Email Already Exist" })
 
-            console.log("User Already Exist")
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -84,7 +82,7 @@ export const login = async (req,res)=>{
         
         if(!email || !password){
 
-           return res.status(400).json({success : false, message : "Missing Field"})
+           return res.json({success : false, message : "Missing Field"})
 
         }
 
@@ -92,7 +90,7 @@ export const login = async (req,res)=>{
 
         if(!isValidUser){
 
-            return res.status(400).json({success : false, message : "Invalid Email"})
+            return res.json({success : false, message : "Invalid Email"})
 
         }
 
@@ -100,7 +98,7 @@ export const login = async (req,res)=>{
 
         if(!isVaildPassword){
 
-            return res.status(400).json({success : false, message : "Invalid Password"})
+            return res.json({success : false, message : "Invalid Password"})
 
         }
 
@@ -148,13 +146,13 @@ export const verifyUser = async (req,res)=>{
 
         if(!user){
 
-           return res.status(400).json({success: false, message : "Invalid User"})
+           return res.json({success: false, message : "Invalid User"})
 
         }
 
         if(user.isVerified){
 
-            return res.status(400).json({success:false, message : "User Already Verified"})
+            return res.json({success:false, message : "User Already Verified"})
 
         }else{
 
@@ -208,7 +206,7 @@ export const verifyOtp = async (req,res)=>{
 
         if(!userId || !otp){
 
-            return res.status(400).json({success:false, message : "Missing Field"})
+            return res.json({success:false, message : "Missing Field"})
 
         }
 
@@ -216,13 +214,13 @@ export const verifyOtp = async (req,res)=>{
 
         if(user.verifyOtp === '' && user.verifyOtp !== otp){
 
-            return res.status(400).json({success:false, message : "Invalid OTP"})
+            return res.json({success:false, message : "Invalid OTP"})
 
         } 
         
         if(Date.now() > user.verifyOtpExpiresAt){
 
-            return res.status(400).json({success:false, message : "OTp Expired Please Try Again"})
+            return res.json({success:false, message : "OTP Expired Please Try Again"})
 
         }
 
@@ -253,7 +251,7 @@ export const isAuthenticated = async (req,res)=>{
 
     }catch(error){
 
-        res.status(400).json({success: false, message : error.message})
+        res.json({success: false, message : error.message})
 
     }
 }
@@ -266,7 +264,7 @@ export const sendResetOtp = async (req,res)=>{
 
         if(!email){
 
-            return res.status(400).json({success:false, message : "Email is Not Available"})
+            return res.json({success :false, message : "Email is Not Available"})
 
         }
 
@@ -274,7 +272,7 @@ export const sendResetOtp = async (req,res)=>{
 
         if(!user){
 
-            return res.status(400).json({success : false, message : "Invalid User"})
+            return res.json({success : false, message : "Invalid Email"})
 
         }
 
@@ -296,7 +294,7 @@ export const sendResetOtp = async (req,res)=>{
 
         try{
             
-                const info = await transporter.sendMail(mailOptions);
+            const info = await transporter.sendMail(mailOptions);
 
         } catch (error) {
 
@@ -311,7 +309,7 @@ export const sendResetOtp = async (req,res)=>{
 
         await user.save()
 
-        res.status(200).json({success: true, message: "Reset OTP Sended"})
+        res.status(200).json({success: true, message: "Reset OTP Sended to your Mail"})
 
     }catch(error){
 
@@ -327,7 +325,7 @@ export const resetPassword = async (req, res)=>{
 
     if(!email || !otp || !password){
 
-        return res.status(400).json({success : false, message : "Missing Fields"})
+        return res.json({success : false, message : "Missing Fields"})
     }
 
     try {
@@ -336,19 +334,19 @@ export const resetPassword = async (req, res)=>{
 
         if(!user){
     
-            return res.status(400).json({success : false, message : "Invalid Email"})
+            return res.json({success : false, message : "Invalid Email"})
     
         }
     
         if(otp === '' || user.resetOtp !== otp){
     
-            return res.status(400).json({success : false, message : "Invalid OTP"})  
+            return res.json({success : false, message : "Invalid OTP"})  
     
         }
     
         if(Date.now() > user.resetOtpExpiresAt){
     
-            return res.status(400).json({success : false, message : "Password Rest OTP Expired"})
+            return res.json({success : false, message : "Password Rest OTP Expired, Please try again!"})
     
         }
     

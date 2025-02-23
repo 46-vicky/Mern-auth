@@ -3,13 +3,11 @@ import User from "../models/authModel.js"
 
 const protectRoute = async (req, res, next)=>{
 
-    console.log('triggered')
-
     const {token} = req.cookies;
 
     if(!token){
 
-        return res.status(400).json({success: false, message : "Unauthorized : No token Provided"});
+        return res.json({success: false, message : "Unauthorized : No token Provided"});
 
     }
 
@@ -19,7 +17,7 @@ const protectRoute = async (req, res, next)=>{
 
         if(!decodedToken){
     
-            return res.status(400).json({success: false, message : "Unauthorized : Invalid Token"});
+            return res.json({success: false, message : "Unauthorized : Invalid Token"});
     
         }
     
@@ -27,7 +25,7 @@ const protectRoute = async (req, res, next)=>{
     
         if(!user){
             
-            return res.status(400).json({success: false, message : "User Not Found"})
+            return res.json({success: false, message : "User Not Found"})
     
         }
     

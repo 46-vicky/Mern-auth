@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect} from "react";
 import { assets } from "../assets/assets";
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
@@ -17,7 +17,7 @@ const Login = () => {
 
   const [password, setPassword] = useState("");
 
-  const {backendURL, setIsLoggedIn, getUserData} = useContext(AppContext);
+  const {backendURL, isLoggedIn, setIsLoggedIn, getUserData} = useContext(AppContext);
 
   const onSubmitHandler = async (e)=>{
 
@@ -63,11 +63,18 @@ const Login = () => {
 
     }catch(error){
 
-      toast.error(data.message)
+      toast.error(error.response?.data?.message || "Something went wrong. Please try again.");
 
     }
 
   }
+
+  
+  useEffect(()=>{
+    if(isLoggedIn){
+      navigate('/')
+    }
+  },[isLoggedIn])
 
   return (
     <div className="flex items-center justify-center min-h-screen px-6 sm:px-0 bg-gradient-to-br from-blue-200 to-purple-400">
@@ -128,11 +135,11 @@ const Login = () => {
             />
           </div>
 
-          <p className="mb-4 text-indigo-500 cursor-pointer flex justify-end" onClick={()=>navigate('/reset-password')}>
+         {state === "Login" && (<p className="mb-4 text-indigo-500 cursor-pointer flex justify-end" onClick={()=>navigate('/forgot-password')}>
             Forgot Password?
-          </p>
+          </p>)} 
 
-          <button className="w-full py-2.5 rounded-full bg-gradient-to-r from-indigo-500 to-indigo-900 text-white font-medium">
+          <button className="w-full py-2.5 rounded-full bg-gradient-to-r from-indigo-500 to-indigo-900 text-white font-medium cursor-pointer">
             {state}
           </button>
         </form>
